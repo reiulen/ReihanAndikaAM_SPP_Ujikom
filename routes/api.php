@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/petugas', [PetugasController::class, 'data'])->name('datapetugas');
+Route::post('/petugas/{petugas:id}', [PetugasController::class, 'data'])->name('datapetugas');
 Route::post('/kelas', [KelasController::class, 'data'])->name('datakelas');

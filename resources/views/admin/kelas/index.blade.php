@@ -34,17 +34,23 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6" id="form-kelas">
+      <div class="col-md-6" id="form-kelas" style="display:none">
         <div class="card">
             <div class="card-header">
               <h4>Kelas</h4>
             </div>
             <div class="card-body">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                  <div id="alert"></div>
+                    <form method="post">
                         <div class="form-group row mb-4">
                             <label>Kelas</label>
-                            <input type="text" class="form-control" name="kelas"/>
+                            <select class="form-control" name="kelas">
+                              <option selected disabled>- Pilih Kelas -</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                              <option value="12">12</option>
+                            </select>
                         </div>
                         <div class="form-group row mb-5">
                             <label>Kompetensi Keahlian</label>

@@ -43,7 +43,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
+                </div>
                 @endif
                 <form method="POST" action="{{ route('proseslogin') }}" id="siswa" class="needs-validation" novalidate="">
                     @csrf

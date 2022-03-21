@@ -17,31 +17,31 @@ $('.btn-cancel').click(function(e){
 var table = $('#table').DataTable({
     serverSide:true,
     ajax  :{
-        url: `${url}/api/kelas`,
+        url: `${url}/api/petugas/${log}`,
         method : "POST"
     },
     columns : [
         {
-            data: "nama_kelas",
-            name: "nama_kelas",
+            data: "id_petugas",
+            name: "id_petugas",
         },
         {
-            data: "kompetensi_keahlian",
-            name: "kompetensi_keahlian",
+            data: "nama_petugas",
+            name: "nama_petugas",
+        },
+        {
+            data: "username",
+            name: "username",
+        },
+        {
+            data: "level",
+            name: "level",
         },
         {
             data: "aksi",
             name: "aksi",
         },
     ]
-});
-
-const form = $('form');
-form.submit(function(e){
-    e.preventDefault();
-    $.ajax({
-        url: `${url}/kelas/store`
-    });
 });
 
 

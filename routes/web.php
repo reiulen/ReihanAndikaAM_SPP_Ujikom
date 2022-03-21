@@ -18,15 +18,15 @@ use App\Http\Controllers\admin\AuthController;
 |
 */
 
-Route::group(['middleware' => 'guest'], function(){
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'proseslogin'])->name('proseslogin');
 });
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('/petugas', PetugasController::class);
     Route::resource('/siswa', SiswaController::class);
-    Route::resource('/kelas', KelasController::class);
+    include_once('admin/kelas.php');
 });

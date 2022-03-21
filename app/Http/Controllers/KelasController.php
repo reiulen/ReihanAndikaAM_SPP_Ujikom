@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class KelasController extends Controller
 {
@@ -36,86 +37,59 @@ class KelasController extends Controller
      */
     public function store(Request $request)
     {
-        $message = [
-            'required' => 'Belum diisi',
-            'unique' => 'Tidak boleh sama!'
-        ];
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'kelas' => 'required',
-            'kompeten' => 'required'
-        ], $message);
+            'kompetensi_keahlian' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ]);
+        }
 
         Kelas::create([
-            'kelas' => $request->kelas,
-            'kompeten' => $request->kompeten,
+            'nama_kelas' => $request->kelas,
+            'kompetensi_keahlian' => $request->kompetensi_keahlian,
         ]);
-        return redirect('/kelas')->with('pesan', 'Kelas berhasil ditambahkan');
+        return response()->json('Kelas ' . $request->kelas . ' ' . $request->kompetensi_keahlian . ' berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $kelas = Kelas::findorfail($id);
-        return view('kelas.edit_kelas', compact('kelas'));
+        return response()->json($kelas);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $message = [
-            'required' => 'Belum diisi',
-            'unique' => 'Tidak boleh sama!'
-        ];
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'kelas' => 'required',
-            'kompeten' => 'required'
-        ], $message);
+            'kompetensi_keahlian' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ]);
+        }
 
         $user = Kelas::find($id);
 
         $user->update([
-            'kelas' => $request->kelas,
-            'kompeten' => $request->kompeten,
+            'nama_kelas' => $request->kelas,
+            'kompetensi_keahlian' => $request->kompetensi_keahlian,
         ]);
-        return redirect('/kelas')->with('pesan', 'Kelas berhasil diedit');
+        return response()->json('Kelas ' . $request->kelas . ' ' . $request->kompetensi_keahlian . ' berhasil diubah');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $kelas = Kelas::find($id);
         $kelas->delete($id);
-        return redirect('/kelas')->with([
-            'pesan'=> 'Data Kelas ' . $kelas->nama_kelas . $kelas->kompeten . ' berhasil dihapus',
+        return response()->json([
+            'pesan' => 'Kelas ' . $kelas->nama_kelas . ' ' . $kelas->kompetensi_keahlian . ' berhasil dihapus',
         ]);
     }
 
@@ -123,19 +97,20 @@ class KelasController extends Controller
     {
         $data = Kelas::latest()->get();
         return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('aksi', function($data){
-                    $button = "<div class='dropdown'>
-                                    <button class='btn btn-none' id='petugasdrop" .$data->id ."' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> <i class='fas fa-ellipsis-v' type='button'></i></button>
-                                    <div class='dropdown-menu' aria-labelledby='petugasdrop" .$data->id ."'>
-                                        <a class='dropdown-item' href='" .route('petugas.edit', $data->id) ."'><i class='fa fa-edit'></i>&nbsp; Edit Petugas</a>
-                                        <a class='dropdown-item' data-toggle='modal' data-target='#modalpetugas" .$data->id ."' href='#'><i class='fa fa-eye'></i>&nbsp; Lihat Detail</a>
-                                        <a class='dropdown-item btnhapus' data-id='" .$data->id ."' data-nama=".$data->nama_kelas . ' ' . $data->kompetensi_keahlian." href='#'><i class='fa fa-trash'></i>&nbsp; Hapus</a>
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($data) {
+                $button = "<div class='dropdown'>
+                                    <button class='btn btn-none' id='kelasdrop" . $data->id . "' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> 
+                                      <i class='fas fa-ellipsis-v' type='button'></i>
+                                    </button>
+                                    <div class='dropdown-menu' aria-labelledby='kelassdrop" . $data->id . "'>
+                                        <a class='dropdown-item btn-edit' href='#' data-id='" . $data->id . "'><i class='fa fa-edit'></i>&nbsp; Edit Kelas</a>
+                                        <a class='dropdown-item btnhapus' data-id='" . $data->id . "' data-nama='" . $data->nama_kelas . " " . $data->kompetensi_keahlian . "' href='#'><i class='fa fa-trash'></i>&nbsp; Hapus</a>
                                     </div>
                                 </div>";
-                    return $button;
-                })
-                ->rawColumns(['aksi'])
-                ->make(true);
+                return $button;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 }

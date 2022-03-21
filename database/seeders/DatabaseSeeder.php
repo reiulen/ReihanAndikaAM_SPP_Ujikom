@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        // Petugas::create([
-        //     'id_petugas' =>'PE0001',
-        //     'username' => 'admin',
-        //     'password' => bcrypt('admin'),
-        //     'nama_petugas' => 'Reihan Andika AM',
-        //     'level' => 'Admin'
-        // ]);
+        Petugas::create([
+            'id_petugas' => 'PE0001',
+            'username' => 'admin',
+            'password' => bcrypt('admin'),
+            'nama_petugas' => 'Reihan Andika AM',
+            'level' => 'Admin'
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Petugas;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class PetugasController extends Controller
 {
@@ -15,7 +16,7 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        $petugas = Petugas::where('level', '!=', 'Admin')->latest()->get();
+        $petugas = Petugas::where('id', '!=', Auth::user()->id)->latest()->get();
         return view('admin.petugas.index', compact('petugas'));
     }
 
@@ -64,9 +65,8 @@ class PetugasController extends Controller
 
         return redirect(route('petugas.index'))->with([
             'pesan' => 'Berhasil ditambahkan',
-            'pesan1' => 'Petugas ' .$request->nama_petugas. ' berhasil ditambahkan'
+            'pesan1' => 'Petugas ' . $request->nama_petugas . ' berhasil ditambahkan'
         ]);
-
     }
 
     /**
@@ -118,9 +118,9 @@ class PetugasController extends Controller
 
         $user = Petugas::find($id);
 
-        if($request->password){
+        if ($request->password) {
             $password = bcrypt($request->password);
-        }else{
+        } else {
             $password = $user->password;
         }
 
@@ -135,43 +135,31 @@ class PetugasController extends Controller
 
         return redirect(route('petugas.index'))->with([
             'pesan' => 'Berhasil diubah',
-            'pesan1' => 'Petugas ' .$request->nama_petugas. ' berhasil diubah'
+            'pesan1' => 'Petugas ' . $request->nama_petugas . ' berhasil diubah'
         ]);
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function data($id)
     {
-        //
-    }
-
-    public function data()
-    {
-        $data = Petugas::where('level', '!=', 'Admin')->latest()->get();
+        $data = Petugas::where('id_petugas', '!=', $id)->latest()->get();
         return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('level', function($data){
-                    $button = "<span class='badge ".badgelevel($data->level)."'>". $data->level."</span>";
-                    return $button;
-                })
-                ->addColumn('aksi', function($data){
-                    $button = "<div class='dropdown'>
-                                    <button class='btn btn-none' id='petugasdrop" .$data->id ."' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> <i class='fas fa-ellipsis-v' type='button'></i></button>
-                                    <div class='dropdown-menu' aria-labelledby='petugasdrop" .$data->id ."'>
-                                        <a class='dropdown-item' href='" .route('petugas.edit', $data->id) ."'><i class='fa fa-edit'></i>&nbsp; Edit Petugas</a>
-                                        <a class='dropdown-item' data-toggle='modal' data-target='#modalpetugas" .$data->id ."' href='#'><i class='fa fa-eye'></i>&nbsp; Lihat Detail</a>
-                                        <a class='dropdown-item btnhapus' data-id='" .$data->id ."' data-nama=".$data->nama_petugas." href='#'><i class='fa fa-trash'></i>&nbsp; Hapus</a>
+            ->addIndexColumn()
+            ->addColumn('level', function ($data) {
+                $button = "<span class='badge " . badgelevel($data->level) . "'>" . $data->level . "</span>";
+                return $button;
+            })
+            ->addColumn('aksi', function ($data) {
+                $button = "<div class='dropdown'>
+                                    <button class='btn btn-none' id='petugasdrop" . $data->id . "' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> <i class='fas fa-ellipsis-v' type='button'></i></button>
+                                    <div class='dropdown-menu' aria-labelledby='petugasdrop" . $data->id . "'>
+                                        <a class='dropdown-item' href='" . route('petugas.edit', $data->id) . "'><i class='fa fa-edit'></i>&nbsp; Edit Petugas</a>
+                                        <a class='dropdown-item' data-toggle='modal' data-target='#modalpetugas" . $data->id . "' href='#'><i class='fa fa-eye'></i>&nbsp; Lihat Detail</a>
+                                        <a class='dropdown-item btnhapus' data-id='" . $data->id . "' data-nama=" . $data->nama_petugas . " href='#'><i class='fa fa-trash'></i>&nbsp; Hapus</a>
                                     </div>
                                 </div>";
-                    return $button;
-                })
-                ->rawColumns(['level','aksi'])
-                ->make(true);
+                return $button;
+            })
+            ->rawColumns(['level', 'aksi'])
+            ->make(true);
     }
 }

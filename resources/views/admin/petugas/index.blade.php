@@ -38,6 +38,9 @@
 
     @include('admin.lib.datatable');
     @push('script')
+        <script>
+          const log = "{{ Auth::user()->id_petugas }}"
+        </script>
         <script src="{{ asset('assets/js/pages/petugas/index.js') }}"></script>
     @endpush
    </x-admin-layout>
@@ -47,7 +50,7 @@
        <div class="modal-dialog modal-dialog-centered">
            <div class="modal-content">
                <div class="modal-header">
-                   <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                   <h5 class="modal-title" id="staticBackdropLabel">Detail Petugas</h5>
                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                        <span aria-hidden="true">&times;</span>
                    </button>
