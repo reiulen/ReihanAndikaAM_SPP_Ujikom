@@ -25,6 +25,7 @@
                     </th>
                     <th>Nama</th>
                     <th>Kelas</th>
+                    <th>ID SPP</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -32,11 +33,12 @@
                     @foreach ($siswa as $row)
                     <tr>
                         <td class="text-center">
-                          {{ $siswa->nisn }}
+                          {{ $row->nisn }}
                         </td>
-                        <td> {{ $siswa->nis }}</td>
-                        <td> {{ $siswa->nama }}</td>
-                        <td> {{ $siswa->kelas }}</td>
+                        <td> {{ $row->nis }}</td>
+                        <td> {{ $row->nama }}</td>
+                        <td>{{ $row->kelas->nama_kelas }} {{ $row->kelas->kompetensi_keahlian }}</td>
+                        <td>{{ $row->spp->id_spp . ' - ' .$row->spp->tahun }}</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-none" id="siswadrop{{$row->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-ellipsis-v" type="button"></i></button>
@@ -44,6 +46,10 @@
                                     <a class="dropdown-item" href="{{route("siswa.edit", $row->id) }}"><i class="fa fa-edit"></i>&nbsp; Edit Siswa</a>
                                     <a class="dropdown-item" data-toggle="modal" data-target="#modalsiswa{{$row->id }}" href="#"><i class="fa fa-eye"></i>&nbsp; Lihat Detail</a>
                                     <a class="dropdown-item btnhapus" data-id="{{$row->id }}" data-nama="{{ $row->nama }}" href="#"><i class="fa fa-trash"></i>&nbsp; Hapus</a>
+                                    <form action="{{ route('siswa.destroy', $row->id) }}" id="hapus{{ $row->id }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                    </form>
                                 </div>
                             </div>
                         </td>
@@ -61,7 +67,26 @@
 @include('admin.lib.datatable');
 @push('script')
   <script>
-      $('#table').DataTable();
+      var table = $('#table').DataTable();
+      $('.btnhapus').click(function(e){
+            e.preventDefault();
+            const urlhapus = $(this).data('id');
+            const nama = $(this).attr('data-nama');
+            Swal.fire({
+            title: "Apakah yakin?",
+            text: `SPP ${nama} akan dihapus`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#6492b8da",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yakin",
+            cancelButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(`#hapus${urlhapus}`).submit();
+                }
+            });
+        });
   </script>
 @endpush
 </x-admin-layout>

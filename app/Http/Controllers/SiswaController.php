@@ -46,12 +46,12 @@ class SiswaController extends Controller
         ];
 
         $request->validate([
-            'nisn' => 'required|unique:siswa',
+            'nisn' => 'required|unique:siswas',
             'nis' => 'required',
             'nama' => 'required',
             'id_kelas' => 'required',
             'alamat' => 'required',
-            'no_telp' => 'required',
+            'no_telepon' => 'required',
             'id_spp' => 'required'
         ], $message);
 
@@ -61,7 +61,7 @@ class SiswaController extends Controller
             'nama' => $request->nama,
             'kelas_id' => $request->id_kelas,
             'alamat' => $request->alamat,
-            'no_telp' => $request->no_telp,
+            'no_telepon' => $request->no_telepon,
             'spp_id' => $request->id_spp
         ]);
         return redirect(route('siswa.index'))->with([
@@ -90,7 +90,7 @@ class SiswaController extends Controller
     public function edit($id)
     {
         $siswa = Siswa::with('kelas' , 'spp')->findorfail($id);
-        $kelas = Kelas::get();
+        $kelas = Kelas::latest()->get();
         $spp = SPP::get();
         return view('admin.siswa.update', compact('siswa', 'kelas', 'spp'));
 
@@ -111,12 +111,12 @@ class SiswaController extends Controller
         ];
 
         $request->validate([
-            'nisn' => 'required|unique:siswa,id,' . $id,
+            'nisn' => 'required|unique:siswas,id,' . $id,
             'nis' => 'required',
             'nama' => 'required',
             'id_kelas' => 'required',
             'alamat' => 'required',
-            'no_telp' => 'required',
+            'no_telepon' => 'required',
             'id_spp' => 'required'
         ], $message);
 

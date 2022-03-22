@@ -1,11 +1,11 @@
-<x-admin-layout title="Tambah Siswa">
+<x-admin-layout title="Edit Siswa">
     <section class="section">
         <div class="section-header bg-transparent shadow-none pb-0">
           <a href="{{ route('siswa.index') }}" class="btn btn-outline-primary px-3"><i class="fas fa-arrow-left"></i></a>
           <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="http://reihanpraja.me/admin/dashboard">Admin</a></div>
             <div class="breadcrumb-item active"><a href="{{ route('siswa.index') }}">Siswa</a></div>
-            <div class="breadcrumb-item">Tambah Siswa</div>
+            <div class="breadcrumb-item">Edit Siswa</div>
           </div>
         </div>
 
@@ -15,33 +15,34 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Tambah Siswa</h4>
+                  <h4>Edit Siswa</h4>
                 </div>
                 <div class="card-body">
-                  <form action="{{ route("siswa.store") }}" method="POST" class="needs-validation" novalidate="">
+                  <form action="{{ route("siswa.update", $siswa->id) }}" method="POST" class="needs-validation" novalidate="">
                     @csrf
+                    @method('put')
                     <div class="form-group row justify-content-center mb-4">
                         <div class="col-md-4">
                             <label>NISN</label>
-                            <input type="text" name="nisn" class="form-control @error('nisn') is-invalid @enderror" required>
+                            <input type="text" name="nisn" value="{{ $siswa->nisn }}" class="form-control @error('nisn') is-invalid @enderror" required>
                         </div>
                         <div class="col-md-4">
                             <label>NIS</label>
-                            <input type="text" name="nis" class="form-control @error('nis') is-invalid @enderror" required>
+                            <input type="text" name="nis"  value="{{ $siswa->nis }}" class="form-control @error('nis') is-invalid @enderror" required>
                         </div>
                     </div>
                     <div class="form-group row justify-content-center mb-4">
                         <div class="col-md-4">
                             <label>Nama</label>
-                            <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" required>
+                            <input type="text" name="nama"  value="{{ $siswa->nama }}" class="form-control @error('nama') is-invalid @enderror" required>
                             <x-error-alert error="nama"></x-error-alert>
                         </div>
                         <div class="col-md-4">
                             <label>Kelas</label>
-                            <select class="form-control select2 @error('kelas') is-invalid @enderror" name="kelas" required>
-                                <option selected disabled>- Pilih Kelas -</option>
+                            <select class="form-control select2 @error('id_kelas') is-invalid @enderror" name="id_kelas" required>
+                                <option selected value="{{ $siswa->id }}">{{ $siswa->kelas->nama_kelas }} {{ $siswa->kelas->kompetensi_keahlian }}</option>
                                 @foreach ($kelas as $row)
-                                <option value="{{ $row->id }}">{{ $row->nama . ' ' .$row->kompetensi_keahlian }}</option>
+                                <option value="{{ $row->id }}">{{ $row->nama_kelas . ' ' .$row->kompetensi_keahlian }}</option>
                                 @endforeach
                             </select>
                             <x-error-alert error="level"></x-error-alert>
@@ -50,13 +51,13 @@
                     <div class="form-group row justify-content-center mb-4">
                         <div class="col-md-4">
                             <label>No Telepon</label>
-                            <input type="password" name="no_telepon" class="form-control @error('no_telepon') is-invalid @enderror" required>
+                            <input type="text" name="no_telepon"  value="{{ $siswa->no_telepon }}" class="form-control @error('no_telepon') is-invalid @enderror" required>
                             <x-error-alert error="no_telepon"></x-error-alert>
                         </div>
                         <div class="col-md-4">
                             <label>SPP</label>
-                            <select class="form-control select2 @error('spp') is-invalid @enderror" name="spp" required>
-                                <option selected disabled>- Pilih SPP -</option>
+                            <select class="form-control select2 @error('id_spp') is-invalid @enderror" name="id_spp" required>
+                                <option selected value="{{$siswa->spp_id}}" >{{ $siswa->spp->id_spp . ' - ' . $siswa->spp->tahun }}</option>
                                 @foreach ($spp as $row)
                                 <option value="{{ $row->id }}">{{ $row->id_spp . ' ' .$row->tahun }}</option>
                                 @endforeach
@@ -67,7 +68,7 @@
                     <div class="form-group row justify-content-center mb-4">
                         <div class="col-md-4">
                             <label>Alamat</label>
-                            <textarea class="form-control @error('alamat') is-invalid @enderror"></textarea>
+                            <textarea name="alamat"  class="form-control @error('alamat') is-invalid @enderror">{{ $siswa->alamat }}</textarea>
                             <x-error-alert error="alamat"></x-error-alert>
                         </div>
                         <div class="col-md-4">
@@ -89,9 +90,20 @@
         </div>
     </section>
     @include('admin.lib.select2')
+    <script src="{{ asset('assets/js/inputmask.js') }}"></script>
     @push('script')
         <script>
             $('.select2').select2();
+            const DOMstrings = {
+                inputNisn : document.querySelector('input[name="nisn'),
+                inputNis : document.querySelector('input[name="nis"]')
+            }
+            Inputmask({ mask: "999999999" }).mask(
+                DOMstrings.inputNisn
+            );
+            Inputmask({ mask: "999999999" }).mask(
+                DOMstrings.inputNis
+            )
         </script>
     @endpush
 </x-admin-layout>

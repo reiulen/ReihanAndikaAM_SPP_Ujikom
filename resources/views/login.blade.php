@@ -21,7 +21,7 @@
         <div class="row">
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="login-brand">
-              <h1>E-SPP</h1>
+              <h1>{{ Auth::guard('siswa')->user() }}</h1>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -47,9 +47,10 @@
                 @endif
                 <form method="POST" action="{{ route('proseslogin') }}" id="siswa" class="needs-validation" novalidate="">
                     @csrf
+                    <input type="hidden" name="siswa" value="hai" />
                     <div class="form-group">
                       <label for="nisn">NISN</label>
-                      <input id="nisn" type="text" class="form-control" name="nisn" tabindex="1" required autofocus>
+                      <input id="nisn" type="text" class="form-control" name="nis" tabindex="1" required autofocus>
                       <div class="invalid-feedback">
                         NISN tidak boleh kosong
                       </div>
@@ -68,8 +69,9 @@
                       </button>
                     </div>
                   </form>
-                <form method="POST" action="#" id="pengelola" class="needs-validation" novalidate="">
+                <form method="POST" action="{{ route('proseslogin') }}" id="pengelola" class="needs-validation" novalidate="">
                     @csrf
+                    <input type="hidden" name="pengelola" value="hai" />
                   <div class="form-group">
                     <label for="email">Username</label>
                     <input id="email" type="text" class="form-control" name="username" tabindex="1" required autofocus>
@@ -81,11 +83,6 @@
                   <div class="form-group">
                     <div class="d-block">
                     	<label for="password" class="control-label">Password</label>
-                      <div class="float-right">
-                        <a href="auth-forgot-password.html" class="text-small">
-                          Forgot Password?
-                        </a>
-                      </div>
                     </div>
                     <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
                     <div class="invalid-feedback">

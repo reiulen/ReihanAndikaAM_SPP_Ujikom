@@ -43,6 +43,7 @@
                 <div class="col-md-12">
                   <div id="alert"></div>
                     <form method="post">
+                        <input type="hidden" name="id" value="0" />
                         <div class="form-group row mb-4">
                             <label>Kelas</label>
                             <select class="form-control" name="kelas">

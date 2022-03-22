@@ -38,10 +38,10 @@
                         </div>
                         <div class="col-md-4">
                             <label>Kelas</label>
-                            <select class="form-control select2 @error('kelas') is-invalid @enderror" name="kelas" required>
+                            <select class="form-control select2 @error('id_kelas') is-invalid @enderror" name="id_kelas" required>
                                 <option selected disabled>- Pilih Kelas -</option>
                                 @foreach ($kelas as $row)
-                                <option value="{{ $row->id }}">{{ $row->nama . ' ' .$row->kompetensi_keahlian }}</option>
+                                <option value="{{ $row->id }}">{{ $row->nama_kelas . ' ' .$row->kompetensi_keahlian }}</option>
                                 @endforeach
                             </select>
                             <x-error-alert error="level"></x-error-alert>
@@ -50,12 +50,12 @@
                     <div class="form-group row justify-content-center mb-4">
                         <div class="col-md-4">
                             <label>No Telepon</label>
-                            <input type="password" name="no_telepon" class="form-control @error('no_telepon') is-invalid @enderror" required>
+                            <input type="text" name="no_telepon" class="form-control @error('no_telepon') is-invalid @enderror" required>
                             <x-error-alert error="no_telepon"></x-error-alert>
                         </div>
                         <div class="col-md-4">
                             <label>SPP</label>
-                            <select class="form-control select2 @error('spp') is-invalid @enderror" name="spp" required>
+                            <select class="form-control select2 @error('id_spp') is-invalid @enderror" name="id_spp" required>
                                 <option selected disabled>- Pilih SPP -</option>
                                 @foreach ($spp as $row)
                                 <option value="{{ $row->id }}">{{ $row->id_spp . ' ' .$row->tahun }}</option>
@@ -67,7 +67,7 @@
                     <div class="form-group row justify-content-center mb-4">
                         <div class="col-md-4">
                             <label>Alamat</label>
-                            <textarea class="form-control @error('alamat') is-invalid @enderror"></textarea>
+                            <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror"></textarea>
                             <x-error-alert error="alamat"></x-error-alert>
                         </div>
                         <div class="col-md-4">
@@ -89,9 +89,20 @@
         </div>
     </section>
     @include('admin.lib.select2')
+    <script src="{{ asset('assets/js/inputmask.js') }}"></script>
     @push('script')
         <script>
             $('.select2').select2();
+            const DOMstrings = {
+                inputNisn : document.querySelector('input[name="nisn'),
+                inputNis : document.querySelector('input[name="nis"]')
+            }
+            Inputmask({ mask: "999999999" }).mask(
+                DOMstrings.inputNisn
+            );
+            Inputmask({ mask: "999999999" }).mask(
+                DOMstrings.inputNis
+            )
         </script>
     @endpush
 </x-admin-layout>

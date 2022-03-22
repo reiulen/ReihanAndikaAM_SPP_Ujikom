@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Spp;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class SPPController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $spp = SPP::orderBy('id_spp', 'DESC')->first();
+        return view('admin.spp.index', compact('spp'));
     }
 
     /**
@@ -23,7 +22,7 @@ class SPPController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -34,7 +33,34 @@ class SPPController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'tahun' => 'required',
+            'nominal' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ]);
+        }
+
+        $user = Spp::find($request->id);
+        if($user){
+            $nominal = preg_replace("/[^0-9]/", "", $request->nominal);
+            $user->update([
+                'tahun' => $request->tahun,
+                'nominal' => $nominal
+            ]);
+        }else{
+            $nominal = preg_replace("/[^0-9]/", "", $request->nominal);
+
+            Spp::create([
+                'id_spp' => $request->id_spp,
+                'tahun' => $request->tahun,
+                'nominal' => $nominal
+            ]);
+        }
+        return response()->json('SPP ' . $request->id_spp . ' ' . $request->tahun . ' berhasil disimpan');
     }
 
     /**
@@ -56,7 +82,9 @@ class SPPController extends Controller
      */
     public function edit($id)
     {
-        //
+        $spp = SPP::findorfail($id);
+        return response()->json($spp);
+
     }
 
     /**
@@ -68,7 +96,7 @@ class SPPController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -79,6 +107,31 @@ class SPPController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $spp = SPP::find($id);
+        $spp->delete($id);
+        return response()->json([
+            'SPP ' . $spp->id_spp . ' ' . $spp->tahun . ' berhasil dihapus'
+        ]);
+    }
+
+    public function data()
+    {
+        $data = Spp::latest()->get();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($data) {
+                $button = "<div class='dropdown'>
+                                    <button class='btn btn-none' id='kelasdrop" . $data->id . "' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                      <i class='fas fa-ellipsis-v' type='button'></i>
+                                    </button>
+                                    <div class='dropdown-menu' aria-labelledby='kelassdrop" . $data->id . "'>
+                                        <a class='dropdown-item btn-edit' href='#' data-id='" . $data->id . "'><i class='fa fa-edit'></i>&nbsp; Edit Kelas</a>
+                                        <a class='dropdown-item btnhapus' data-id='" . $data->id . "' data-nama='" . $data->id_spp . " " . $data->tahun . "' href='#'><i class='fa fa-trash'></i>&nbsp; Hapus</a>
+                                    </div>
+                                </div>";
+                return $button;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 }

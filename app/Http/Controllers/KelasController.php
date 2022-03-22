@@ -49,11 +49,21 @@ class KelasController extends Controller
             ]);
         }
 
-        Kelas::create([
-            'nama_kelas' => $request->kelas,
-            'kompetensi_keahlian' => $request->kompetensi_keahlian,
-        ]);
-        return response()->json('Kelas ' . $request->kelas . ' ' . $request->kompetensi_keahlian . ' berhasil ditambahkan');
+        $user = Kelas::find($request->id);
+
+        if($user){
+            $user->update([
+                'nama_kelas' => $request->kelas,
+                'kompetensi_keahlian' => $request->kompetensi_keahlian,
+            ]);
+        }else{
+            Kelas::create([
+                'nama_kelas' => $request->kelas,
+                'kompetensi_keahlian' => $request->kompetensi_keahlian,
+            ]);
+        }
+
+        return response()->json('Kelas ' . $request->kelas . ' ' . $request->kompetensi_keahlian . ' berhasil disimpan');
     }
 
     public function edit($id)
@@ -62,27 +72,6 @@ class KelasController extends Controller
         return response()->json($kelas);
     }
 
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'kelas' => 'required',
-            'kompetensi_keahlian' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ]);
-        }
-
-        $user = Kelas::find($id);
-
-        $user->update([
-            'nama_kelas' => $request->kelas,
-            'kompetensi_keahlian' => $request->kompetensi_keahlian,
-        ]);
-        return response()->json('Kelas ' . $request->kelas . ' ' . $request->kompetensi_keahlian . ' berhasil diubah');
-    }
 
     public function destroy($id)
     {
@@ -100,7 +89,7 @@ class KelasController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($data) {
                 $button = "<div class='dropdown'>
-                                    <button class='btn btn-none' id='kelasdrop" . $data->id . "' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'> 
+                                    <button class='btn btn-none' id='kelasdrop" . $data->id . "' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                       <i class='fas fa-ellipsis-v' type='button'></i>
                                     </button>
                                     <div class='dropdown-menu' aria-labelledby='kelassdrop" . $data->id . "'>

@@ -1,10 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SPPController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\admin\AuthController;
 
 /*
@@ -23,10 +27,21 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [AuthController::class, 'proseslogin'])->name('proseslogin');
 });
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::group(['middleware' => 'auth'], function (){
+    Route::group(['middleware' => 'admin'], function(){
+        Route::resource('/petugas', PetugasController::class);
+        Route::resource('/siswa', SiswaController::class);
+        include_once('admin/kelas.php');
+        include_once('admin/spp.php');
+    });
+    Route::group(['middleware' => 'siswa'], function(){
+        Route::resource('/transaksi', TransaksiController::class);
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    });
+});
 
-    Route::resource('/petugas', PetugasController::class);
-    Route::resource('/siswa', SiswaController::class);
-    include_once('admin/kelas.php');
+Route::group(['middleware' => 'bukanuser'], function(){
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
 });
