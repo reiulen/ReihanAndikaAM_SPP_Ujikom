@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header row">
             <a href="{{ route('transaksi.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp; Tambah Transaksi</a>
           </div>
           <div class="card-body">
@@ -17,13 +17,14 @@
                 <table class="table table-bordered" id="table" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Tanggal</th>
                             <th>ID Pembayaran</th>
                             <th>NISN</th>
                             <th>Nama</th>
-                            <th>Tanggal</th>
+                            <th>Pembayaran Bulan</th>
                             <th>ID SPP</th>
                             <th>Jumlah Bayar</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -31,10 +32,11 @@
                     <tbody>
                     @foreach ( $pembayaran as $row )
                         <tr>
+                            <td>{{ tanggal($row->created_at) }}</td>
                             <td>{{ $row->id_pembayaran }}</td>
                             <td>{{ $row->nisn }}</td>
                             <td>{{ $siswa->firstWhere('nisn', $row->nisn)->nama }}</td>
-                            <td>{{ $row->tgl_bayar . ' ' . $row->bulan_dibayar . ' ' .$row->tahun_dibayar }}</td>
+                            <td>{{  $row->bulan_dibayar . ' ' .$row->tahun_dibayar }}</td>
                             <td>{{ $row->spp->id_spp . ' - ' . $row->spp->tahun }}</td>
                             <td>{{ format_rupiah($row->jumlah_bayar) }}</td>
                             <td>

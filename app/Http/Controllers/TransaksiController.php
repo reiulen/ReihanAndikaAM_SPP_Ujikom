@@ -54,19 +54,22 @@ class TransaksiController extends Controller
         $request->validate([
             'id_pembayaran' => 'required|unique:pembayarans',
             'nama' => 'required',
-            'jumlah_bayar' => 'required'
+            'jumlah_bayar' => 'required',
+            'bultahun' => 'required',
         ], $message);
 
         $nominal = preg_replace("/[^0-9]/", "", $request->jumlah_bayar);
         $siswa = Siswa::findorfail($request->nama);
+        $tahun = tahun($request->butahun);
+        $bulan = bulan($request->bultahun);
 
         Pembayaran::create([
             'id_pembayaran' => $request->id_pembayaran,
             'petugas_id' => Auth::user()->id,
             'nisn' => $siswa->nisn,
             'tgl_bayar' => date('d'),
-            'bulan_dibayar' => bulan(date('F')),
-            'tahun_dibayar' => date('Y'),
+            'bulan_dibayar' => $bulan,
+            'tahun_dibayar' => $tahun,
             'spp_id' => $siswa->spp_id,
             'jumlah_bayar' => $nominal,
         ]);
@@ -116,20 +119,23 @@ class TransaksiController extends Controller
 
         $request->validate([
             'nama' => 'required',
-            'jumlah_bayar' => 'required'
+            'jumlah_bayar' => 'required',
+            'bultahun' => 'required'
         ], $message);
 
         $nominal = preg_replace("/[^0-9]/", "", $request->jumlah_bayar);
         $siswa = Siswa::findorfail($request->nama);
 
         $pembayaran = Pembayaran::findorfail($id);
+        $tahun = tahun($request->butahun);
+        $bulan = bulan($request->bultahun);
 
         $pembayaran->update([
             'petugas_id' => Auth::user()->id,
             'nisn' => $siswa->nisn,
             'tgl_bayar' => date('d'),
-            'bulan_dibayar' => bulan(date('F')),
-            'tahun_dibayar' => date('Y'),
+            'bulan_dibayar' => $bulan,
+            'tahun_dibayar' => $tahun,
             'spp_id' => $siswa->spp_id,
             'jumlah_bayar' => $nominal,
         ]);

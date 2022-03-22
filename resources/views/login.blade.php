@@ -49,10 +49,10 @@
                     @csrf
                     <input type="hidden" name="siswa" value="hai" />
                     <div class="form-group">
-                      <label for="nisn">NISN</label>
+                      <label for="nisn">NIS</label>
                       <input id="nisn" type="text" class="form-control" name="nis" tabindex="1" required autofocus>
                       <div class="invalid-feedback">
-                        NISN tidak boleh kosong
+                        NIS tidak boleh kosong
                       </div>
                     </div>
 

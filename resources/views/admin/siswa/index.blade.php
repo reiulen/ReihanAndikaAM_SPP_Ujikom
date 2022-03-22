@@ -44,7 +44,7 @@
                                 <button class="btn btn-none" id="siswadrop{{$row->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-ellipsis-v" type="button"></i></button>
                                 <div class="dropdown-menu" aria-labelledby="siswadrop{{$row->id }}">
                                     <a class="dropdown-item" href="{{route("siswa.edit", $row->id) }}"><i class="fa fa-edit"></i>&nbsp; Edit Siswa</a>
-                                    <a class="dropdown-item" data-toggle="modal" data-target="#modalsiswa{{$row->id }}" href="#"><i class="fa fa-eye"></i>&nbsp; Lihat Detail</a>
+                                    <a class="dropdown-item" href="{{ route('siswa.show', $row->id) }}"><i class="fa fa-eye"></i>&nbsp; Lihat Detail</a>
                                     <a class="dropdown-item btnhapus" data-id="{{$row->id }}" data-nama="{{ $row->nama }}" href="#"><i class="fa fa-trash"></i>&nbsp; Hapus</a>
                                     <form action="{{ route('siswa.destroy', $row->id) }}" id="hapus{{ $row->id }}" method="POST">
                                         @csrf
@@ -74,7 +74,7 @@
             const nama = $(this).attr('data-nama');
             Swal.fire({
             title: "Apakah yakin?",
-            text: `SPP ${nama} akan dihapus`,
+            text: `Siswa ${nama} akan dihapus`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#6492b8da",

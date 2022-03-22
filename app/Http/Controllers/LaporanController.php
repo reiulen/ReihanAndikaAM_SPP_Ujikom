@@ -33,7 +33,7 @@ class LaporanController extends Controller
                 return $nama;
             })
             ->addColumn('tanggal', function ($data) {
-                $nama = $data->tgl_bayar . ' ' . $data->bulan_dibayar . ' ' .$data->tahun_dibayar;
+                $nama = tanggal($data->created_at) ;
                 return $nama;
             })
             ->addColumn('id_spp', function ($data) {
@@ -48,7 +48,11 @@ class LaporanController extends Controller
                 $nama = $data->petugas->nama_petugas;
                 return $nama;
             })
-            ->rawColumns(['nama', 'tanggal', 'id_spp', 'nominal', 'petugas'])
+            ->addColumn('bulan', function ($data) {
+                $nama = $data->bulan_dibayar . ' ' .$data->tahun_dibayar;
+                return $nama;
+            })
+            ->rawColumns(['nama', 'tanggal', 'id_spp', 'nominal', 'petugas', 'bulan'])
             ->make(true);
     }
 }

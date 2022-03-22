@@ -29,7 +29,7 @@
                                         }else {
                                             $proses = substr($pembayaran->id_pembayaran, 3) + 1;
                                             $bil = sprintf("%05s", $proses);
-                                            $input = substr($pembayaran->id_pembayaran, 0, 2) . $bil;
+                                            $input = substr($pembayaran->id_pembayaran, 0, 3) . $bil;
                                         }
                                     @endphp
                                     <input type="text" name="id_pembayaran" value="{{  $input  }}" class="form-control  @error('id_pembayaran') is-invalid @enderror" readonly>
@@ -57,6 +57,15 @@
                                 <div class="col-md-6">
                                     <input type="text" name="jumlah_bayar" class="form-control" @error('jumlah_bayar') is-invalid @enderror>
                                     @error('jumlah_bayar')
+                                    {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row mx-auto">
+                                <label class="col-md-3 text-right">Pembayaran Bulan</label>
+                                <div class="col-md-6">
+                                    <input type="month" class="form-control" name="bultahun" />
+                                    @error('bultahun')
                                     {{ $message }}
                                     @enderror
                                 </div>

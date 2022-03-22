@@ -32,7 +32,8 @@ class AuthController extends Controller
                 return redirect(route('history.index'));
             }
             return back()->with([
-                'pesan' => 'Nis tidak ditemukan!'
+                'pesan' => 'NIS salah',
+                'type' => 'siswa',
             ]);
         }elseif($request->pengelola){
             $credentials = $request->validate([

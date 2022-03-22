@@ -3,9 +3,8 @@
  <x-section-header section="Dashboard">
     <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></div>
  </x-section-header>
-
+ <div class="row">
     @canany(['admin','petugas'])
-    <div class="row">
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1">
                 <div class="card-icon bg-primary">
@@ -26,7 +25,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
         <div class="card-icon bg-danger">
-            <i class="far fa-newspaper"></i>
+            <i class="fas fa-user-tie"></i>
         </div>
         <div class="card-wrap">
             <div class="card-header">
@@ -58,7 +57,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
           <div class="card-icon bg-success">
-            <i class="fas fa-circle"></i>
+            <i class="fas fa-dollar-sign"></i>
           </div>
           <div class="card-wrap">
             <div class="card-header">
@@ -75,11 +74,11 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
           <div class="card-icon bg-danger">
-            <i class="far fa-newspaper"></i>
+            <i class="fas fa-dollar-sign"></i>
         </div>
         <div class="card-wrap">
             <div class="card-header">
-              <h4>Petugas</h4>
+              <h4>Seluruh Transaksi</h4>
             </div>
             <div class="card-body">
                 {{
@@ -87,6 +86,27 @@
                     ->where('bulan_dibayar', bulan(date('F')))
                     ->sum('jumlah_bayar'))
                 }}
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="card card-statistic-1">
+          <div class="card-icon bg-danger">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="card-wrap">
+            <div class="card-header">
+              <h4>Tunggakan</h4>
+            </div>
+            <div class="card-body">
+                @php
+                    $transaksi = DB::table('pembayarans')->where('nisn', Auth::guard('siswa')->user()->nisn)->sum('jumlah_bayar');
+                    $spp = DB::table('spps')->where('id', Auth::guard('siswa')->user()->spp_id)->first();
+                    $jumlahspp = $spp->nominal * date('m');
+                    $hasil = $jumlahspp - $transaksi;
+                @endphp
+                {{ $hasil == '0' ? 'Lunas' : format_rupiah($hasil) }}
             </div>
         </div>
         </div>

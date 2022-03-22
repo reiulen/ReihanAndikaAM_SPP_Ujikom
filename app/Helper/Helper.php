@@ -43,3 +43,19 @@ if(!function_exists('badgelevel')){
         }
     }
 }
+
+if(!function_exists('tanggal')){
+    function tanggal($tanggal){
+        return Carbon::parse($tanggal)->isoFormat('DD MMMM YYYY');
+    }
+}
+if(!function_exists('bulan')){
+    function tahun($tanggal){
+        return Carbon::parse($tanggal)->isoFormat('MMMM');
+    }
+}
+if(!function_exists('tahun')){
+    function tahun($tanggal){
+        return Carbon::parse($tanggal)->isoFormat('YYYY');
+    }
+}

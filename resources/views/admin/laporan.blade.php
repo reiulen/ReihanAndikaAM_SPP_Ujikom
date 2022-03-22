@@ -27,7 +27,7 @@
             </form>
                 <div class="d-flex ml-auto">
                     <div class="form-group">
-                        <label>Transaksi ID SPP</label>
+                        <label>Transaksi Sesuai ID SPP</label>
                         <select class="form-control kelas" name="id_spp">
                             <option selected disabled>- Pilih Sesuai ID SPP -</option>
                             @foreach ($spp as $row)
@@ -42,10 +42,11 @@
                 <table class="table table-bordered" id="table" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Tanggal</th>
                             <th>ID Pembayaran</th>
                             <th>NISN</th>
                             <th>Nama</th>
-                            <th>Tanggal</th>
+                            <th>Pembayaran Bulan</th>
                             <th>ID SPP</th>
                             <th>Jumlah Bayar</th>
                             <th>Nama Petugas</th>

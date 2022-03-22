@@ -119,6 +119,10 @@ class SPPController extends Controller
         $data = Spp::latest()->get();
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('nominal', function ($data) {
+                $button = format_rupiah($data->nominal);
+                return $button;
+            })
             ->addColumn('aksi', function ($data) {
                 $button = "<div class='dropdown'>
                                     <button class='btn btn-none' id='kelasdrop" . $data->id . "' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
@@ -131,7 +135,7 @@ class SPPController extends Controller
                                 </div>";
                 return $button;
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'nominal'])
             ->make(true);
     }
 }

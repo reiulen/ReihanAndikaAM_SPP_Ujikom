@@ -31,15 +31,15 @@
           <li class="menu-header">Pembayaran</li>
           @canany(['admin', 'petugas'])
           <li class="nav-item {{ set_active(['transaksi.index', 'transaksi.create', 'transaksi.edit']) }}">
-            <a href="{{ route('transaksi.index') }}" class="nav-link"><i class="fas fa-fire"></i><span>Transaksi Pembayaran</span></a>
+            <a href="{{ route('transaksi.index') }}" class="nav-link"><i class="fas fa-money-bill"></i><span>Transaksi Pembayaran</span></a>
           </li>
           @endcanany
           <li class="nav-item {{ set_active(['history.index']) }}">
-            <a href="{{ route('history.index') }}" class="nav-link"><i class="fas fa-fire"></i><span>History Pembayaran</span></a>
+            <a href="{{ route('history.index') }}" class="nav-link"><i class="fas fa-edit"></i><span>History Pembayaran</span></a>
           </li>
           @canany(['admin', 'petugas'])
           <li class="nav-item {{ set_active(['laporan.index']) }}">
-            <a href="{{ route('laporan.index') }}" class="nav-link"><i class="fas fa-fire"></i><span>Laporan Pembayaran</span></a>
+            <a href="{{ route('laporan.index') }}" class="nav-link"><i class="fas fa-file-import"></i><span>Laporan Pembayaran</span></a>
           </li>
           @endcanany
         </ul>

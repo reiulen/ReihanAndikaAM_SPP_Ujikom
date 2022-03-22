@@ -53,6 +53,15 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="form-group mb-4 row mx-auto">
+                                <label class="col-md-3 text-right">Pembayaran Bulan</label>
+                                <div class="col-md-6">
+                                    <input type="month" class="form-control" value="{{  $pembayaran->bulan_dibayar . ' ' .$pembayaran->tahun_dibayar }}" name="bultahun" />
+                                    @error('bultahun')
+                                    {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                 <div class="col-sm-12 col-md-7 ml-2">

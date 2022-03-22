@@ -17,6 +17,10 @@ var table = $('#table').DataTable({
     },
     columns : [
         {
+            data: "tanggal",
+            name: "tanggal",
+        },
+        {
             data: "id_pembayaran",
             name: "id_pembayaran",
         },
@@ -29,8 +33,8 @@ var table = $('#table').DataTable({
             name: "nama",
         },
         {
-            data: "tanggal",
-            name: "tanggal",
+            data: "bulan",
+            name: "bulan",
         },
         {
             data: "id_spp",

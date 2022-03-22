@@ -78,7 +78,8 @@ class SiswaController extends Controller
      */
     public function show($id)
     {
-        //
+        $siswa = Siswa::findorfail($id);
+        return view('admin.siswa.show', compact('siswa'));
     }
 
     /**

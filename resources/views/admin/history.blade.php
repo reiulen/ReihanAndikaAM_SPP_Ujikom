@@ -14,10 +14,11 @@
                 <table class="table table-bordered" id="history" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Tanggal</th>
                             <th>ID Pembayaran</th>
                             <th>NISN</th>
                             <th>Nama</th>
-                            <th>Tanggal</th>
+                            <th>Pembayaran Bulan</th>
                             <th>ID SPP</th>
                             <th>Jumlah Bayar</th>
                             <th>Nama Petugas</th>
@@ -26,10 +27,11 @@
                     <tbody>
                     @foreach ( $pembayaran as $row )
                         <tr>
+                            <td>{{ tanggal($row->created_at) }}</td>
                             <td>{{ $row->id_pembayaran }}</td>
                             <td>{{ $row->nisn }}</td>
                             <td>{{ $siswa->firstWhere('nisn', $row->nisn)->nama }}</td>
-                            <td>{{ $row->tgl_bayar . ' ' . $row->bulan_dibayar . ' ' .$row->tahun_dibayar }}</td>
+                            <td>{{  $row->bulan_dibayar . ' ' .$row->tahun_dibayar }}</td>
                             <td>{{ $row->spp->id_spp . ' - ' . $row->spp->tahun }}</td>
                             <td>{{ format_rupiah($row->jumlah_bayar) }}</td>
                             <td>{{ $row->petugas->nama_petugas }}</td>

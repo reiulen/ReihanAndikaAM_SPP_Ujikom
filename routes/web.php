@@ -22,6 +22,10 @@ use App\Http\Controllers\admin\AuthController;
 |
 */
 
+Route::get('/', function(){
+    return view('index');
+});
+
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'proseslogin'])->name('proseslogin');
