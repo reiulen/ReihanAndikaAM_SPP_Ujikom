@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Spp;
+use App\Models\SPP;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
