@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Pembayaran;
-use App\Models\Spp;
+use App\Models\SPP;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -13,7 +13,7 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        $spp = Spp::latest()->get();
+        $spp = SPP::latest()->get();
         return view('admin.laporan', compact('spp'));
     }
 
